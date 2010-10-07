@@ -93,6 +93,23 @@ class Object
 
 	void set_value(const int value);
 
+	/** @brief Retrieves the object's healing potential.
+	 *
+	 * @return The healing power of the object.
+	 */
+
+	int healing() const;
+
+
+	/** @brief Modifies the object's healing potential.
+	 *
+	 * The healing potential cannot be negative, but may be 0.
+	 *
+	 * @param healing How many health the object can heal.
+	 */
+
+	void set_healing(const int healing);
+
         /** @brief Retrieves the object's current x position.
          *
          * @return The current x-coordinate of the object.
@@ -134,8 +151,14 @@ class Object
          */
         int m_x;
 
-        /** @brief Y-Coordiate of the object
+        /** @brief Y-Coordinate of the object
          */
         int m_y;
+
+	/** @brief How much this object can heal
+	 */
+
+	int m_healing;
+
 };
 #endif //__OBJECT_H

@@ -27,13 +27,13 @@
 
 using namespace std;
 
-Object::Object(const string name) : m_name(name), m_x(5), m_y(5)
+Object::Object(const string name) : m_name(name), m_x(5), m_y(5), m_healing(1)
 {
         //Initial Values are selected randomly, but are multiples of 5 in the range 0 to 100.
 	m_value = (random() % 21 ) * 5;
 }
 
-Object::Object(const string name, const int x, const int y) : m_name(name), m_x(x), m_y(y)
+Object::Object(const string name, const int x, const int y) : m_name(name), m_x(x), m_y(y), m_healing(1)
 { 
         //Initial Values are selected randomly, but are multiples of 5 in the range 0 to 100.
 	m_value = (random() % 21 ) * 5;
@@ -50,6 +50,12 @@ void Object::set_name(const string name)
 void Object::set_value(const int value)
 {
 	m_value = value;
+}
+
+void Object::set_healing(const int healing)
+{
+	if (healing >= 0)
+		m_healing = healing;
 }
 
 int Object::x() const
@@ -70,4 +76,9 @@ string Object::name() const
 int Object::value() const
 {
     return m_value;
+}
+
+int Object::healing() const
+{
+    return m_healing;
 }

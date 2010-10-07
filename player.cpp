@@ -20,6 +20,9 @@ bool Player::take_item(Object* item)
 	//Put the item in the player's inventory.
 	inventory.push_back(item);
 
+	//Heal the player by the object's healing potential
+	m_health += item->healing();
+
 	m_score += item->value();
 
 	return true;
