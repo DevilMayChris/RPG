@@ -19,8 +19,8 @@ object.o: object.h object.cpp
 clean: 
 	rm -f *.o simple-rpg
 
-.PHONY: doc
-doc:
+.PHONY: 
+doc: main.cpp object.h object.cpp moving_object.h moving_object.cpp monster.h monster.cpp player.h player.cpp
 	doxygen
 
 install: simple-rpg
