@@ -29,7 +29,8 @@
 #include "object.h"
 #include "monster.h"
 #include "player.h"
-#include "player2.h"
+#include "weapon.h"
+#include "armor.h"
 
 using namespace std;
 
@@ -40,14 +41,14 @@ string moving_names[] = {"tumbleweed", "vicious memory leak", "sarcastic script-
 
 int main(int argc, char** argv){
     int num_objects = 10;
-    int num_moving = 0;
+    int num_moving = 5;
     string name;
     int x, y;
     char command;
-	int t=1;
+    int t=1;
 	
     Player player("player");
-	Player player2("player2");
+    Player player2("player2");
 	
     //If at least one command-line argument was provided, use it as the number of objects to create.
     if (argc > 1) {
@@ -82,95 +83,138 @@ int main(int argc, char** argv){
 		
         collection.push_back(new Monster(name,x,y));
     }
+		
+    //Create armor and weapons.
+    Weapon broadsword("Broadsword", random() % 11, random() % 11, 3);
+    Weapon pike("Pike", random() % 11, random() % 11, 4);
+    Armor chainmail("Chainmail", random() % 11, random() % 11, 3);
+    Armor plate("Plate", random() % 11, random() % 11, 4);
+
+    do{ 
+		
 	
-    do{
-		while(t==1){
-			cout << "Player 1" << endl;
-			cout << "[" << player.x() << ", " << player.y() << "]" << endl;
-			cout << "Your score is: " << player.score() << endl;
-			cout << "Enter a command:" << endl;
-			cout << "   'i' to move up." << endl;
-			cout << "   'm' to move down." << endl;
-			cout << "   'j' to move left." << endl;
-			cout << "   'k' to move right." << endl;
-			cout << "   't' to take an item from this room." << endl;
-			cout << "   'a' to attack a monster in this room." << endl;
-			cout << "   'q' to quit." << endl;
-			cout << endl;
-			
-			//Process command and move player.
-			cin >> command;
-			
-			switch (command) {
-				case 'i':
-					player.move_up();
-					break;
-				case 'm':
-					player.move_down();
-					break;
-				case 'j':
-					player.move_left();
-					break;
-				case 'k':
-					player.move_right();
-					break;
-				case 't':
-					for (vector<Object*>::iterator i=collection.begin(); i != collection.end(); ) {
-						if ((*i)->x() == player.x() && (*i)->y() == player.y()) {
-							if (player.take_item(*i)) {
-								cout << "You take a " << (*i)->name() << endl;
-								i = collection.erase(i);
-							}
-							else {
-								i++;
-								
-								
-							}
+		
+	while(t==1){
+		cout << "__________________________________________________"<<endl;
+		cout << "Player 1" << endl;
+		cout << "[" << player.x() << ", " << player.y() << "]" << endl;
+		cout << "Your score is: " << player.score() << endl;
+		cout << "________________________________________"<<endl;
+	        cout << "Enter a command:" << endl;
+                cout << "   'i' to move up." << endl;
+                cout << "   'm' to move down." << endl;
+                cout << "   'j' to move left." << endl;
+                cout << "   'k' to move right." << endl;
+		cout << "   't' to take an item from this room." << endl;
+		cout << "   'a' to attack a monster in this room." << endl;
+                cout << "   'q' to quit." << endl;
+		cout << "__________________________________________________"<<endl;
+		
+        //Process command and move player.
+        cin >> command;
+		
+        switch (command) {
+            case 'i':
+                player.move_up();
+                break;
+            case 'm':
+                player.move_down();
+                break;
+            case 'j':
+                player.move_left();
+                break;
+            case 'k':
+                player.move_right();
+                break;
+			case 't':
+				for (vector<Object*>::iterator i=collection.begin(); i != collection.end(); ) {
+					if ((*i)->x() == player.x() && (*i)->y() == player.y()) {
+					    Weapon* weap = dynamic_cast<Weapon*>(*i);
+					    Armor* arm = dynamic_cast<Armor*>(*i);
+					    if (weap){
+					        cout << "You inspect the " << weap->name(); << "." << endl;
+						if (player.str() < weap->str()) {
+						    player.set_weapon(weap);
+						    cout << 
+						if (player.take_item(*i)) {
+							cout << "You take a " << (*i)->name() << endl;
+							i = collection.erase(i);
 						}
 						else {
 							i++;
-							
+						
+						
 						}
 					}
-				case 'a':
-					for (vector<Object*>::iterator i=collection.begin(); i != collection.end(); ) {
-						if ((*i)->x() == player.x() && (*i)->y() == player.y()) {
-							Monster* mon = dynamic_cast<Monster*>(*i);
-							if (mon){
-								cout << "You attack " << mon->name() << endl;
-								if (random() % 2 == 0) {
-									cout << mon->name() << " wins!  You lose 5 health." << endl;
-									if (player.hurt_player(5) == false) {
-										cout << "You have died!" << endl;
-										return 1;
-									}
-									i++;
+					else {
+						i++;
+					    
+					}
+					}
+			case 'a':
+				for (vector<Object*>::iterator i=collection.begin(); i != collection.end(); ) {
+					if ((*i)->x() == player.x() && (*i)->y() == player.y()) {
+						Monster* mon = dynamic_cast<Monster*>(*i);
+						if (mon){
+								cout << "What do you do?" << endl;
+								cout << "'a' for a normal attack." << endl;
+								cout << "'s' for a special attack." << endl;
+								cin >> command;
+								switch (command) {
+								    case 'a':
+								        cout << "You attack " << mon->name() << endl;
+								        if (random() % 2 == 0) {
+									    cout << mon->name() << " wins!  You lose 5 health." << endl;
+									        if (player.hurt_player(5) == false) {
+										    cout << "You have died!" << endl;
+										    return 1;
+									        }
+									    i++;
 									
-								}
-								else {
-									cout << "You win!  " << mon->name() << " loses 5 health." << endl;
-									if (mon->hurt_monster(5) == false) {
+								        }
+								        else {
+									    cout << "You win!  " << mon->name() << " loses 5 health." << endl;
+									    if (mon->hurt_monster(5) == false) {
 										cout << "You have killed the monster!" << endl;
 										i = collection.erase(i);
 										player.give_bonus(10);
-									}
+									    }
+								        }
+								    case 's':
+								        cout << "You use a special attack on " << mon->name() << endl;
+								        if (random() % 10 >= 3) {
+									    cout << mon->name() << " wins!  You lose 5 health." << endl;
+									        if (player.hurt_player(5) == false) {
+										    cout << "You have died!" << endl;
+										    return 1;
+									        }
+									    i++;
+									
+								        }
+								        else {
+									    cout << "Your special attack hits!  " << mon->name() << " loses 20 health." << endl;
+									    if (mon->hurt_monster(20) == false) {
+										cout << "You have killed the monster!" << endl;
+										i = collection.erase(i);
+										player.give_bonus(10);
+									    }
+								        }
 								}
 							}
-							else 
-								i++;
-							
-							cout<<"t " << t << "case u attack"<<endl;
-						}
 						else 
 							i++;
+						   
+											}
+					else 
+						i++;
 					    
 						
-						cout<<"t " << t << "if somethime there"<<endl;
-					}
-				default:
-					break;
-			}
-			
+					
+				}
+            default:
+                break;
+		}
+		
 			//Move monsters around
 			for (vector<Object*>::iterator i=collection.begin(); i != collection.end(); i++) {
 				Monster* mon = dynamic_cast<Monster*>(*i);
@@ -188,7 +232,7 @@ int main(int argc, char** argv){
 				}
 			}
 			t=2;}
-		//THIS IS WHERE P@ BEGINS
+//THIS IS WHERE P2 BEGINS
 		//\//\//
 		//
 		//
@@ -197,7 +241,9 @@ int main(int argc, char** argv){
 		//
 		//
 		while(t==2){
+			cout << "__________________________________________________"<<endl;
 			cout << "player2"<<endl;
+			cout << "___________________________________"<<endl;
 			cout << "[" << player2.x() << ", " << player2.y() << "]" << endl;
 			cout << "Your score is: " << player2.score() << endl;
 			cout << "Enter a command:" << endl;
@@ -208,7 +254,7 @@ int main(int argc, char** argv){
 			cout << "   't' to take an item from this room." << endl;
 			cout << "   'a' to attack a monster in this room." << endl;
 			cout << "   'q' to quit." << endl;
-			cout << endl;
+			cout << "__________________________________________________"<<endl;
 			
 			//Process command and move player2.
 			cin >> command;
@@ -240,7 +286,7 @@ int main(int argc, char** argv){
 						}
 						else {
 							i++;
-							
+					
 						}
 					}
 				case 'a':
@@ -263,40 +309,56 @@ int main(int argc, char** argv){
 										cout << "You have killed the monster!" << endl;
 										i = collection.erase(i);
 										player.give_bonus(10);
+																		}
+									 }
 									}
-								}
-							}
 							else 
 								i++;
-							
+					
 						}
 						else 
 							i++;
-						
+					
 					}
 				default:
 					break;
 			}
-			
-			
-			//Move monsters around
-			for (vector<Object*>::iterator i=collection.begin(); i != collection.end(); i++) {
-				Monster* mon = dynamic_cast<Monster*>(*i);
-				if (mon)
-					mon->update();
-			}
-			
-			//Check for objects on the same square as the player2
-			for (vector<Object*>::iterator i=collection.begin(); i != collection.end(); ) {
-				if (player.x() == (*i)->x() && player.y() == (*i)->y()) {
-					cout << "There is a " << (*i)->name() << " here." << endl;
-					i++;
-				} else {
-					i++;
-				}
-			}
-			t=1; }
 		
-    } while (command != 'q');
+		
+		//Move monsters around
+		for (vector<Object*>::iterator i=collection.begin(); i != collection.end(); i++) {
+			Monster* mon = dynamic_cast<Monster*>(*i);
+			if (mon)
+				mon->update();
+		}
+		
+        //Check for objects on the same square as the player2
+        for (vector<Object*>::iterator i=collection.begin(); i != collection.end(); ) {
+            if (player.x() == (*i)->x() && player.y() == (*i)->y()) {
+                cout << "There is a " << (*i)->name() << " here." << endl;
+                i++;
+            } else {
+                i++;
+            }
+        }
+			t=1; }
+	if (collection.empty() && player.score() > player2.score()) {
+			cout << "PLAYER ONE WINS!" << endl;
+		}else {
+			if(player2.score()>player.score()){
+				cout << "PLAYER TWO WINS!" << endl;
+			}else {
+				cout << "TIE"<<endl;
+			}
+		}
+
 	
+
+		
+
+		
+    } while (command != 'q' && !collection.empty());
+			
+
 }
+
