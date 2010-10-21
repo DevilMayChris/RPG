@@ -52,22 +52,24 @@ class Armor
         /** @brief Creates a new armor at location (5, 5).
          * 
          * @param name Short description of the armor.
+	 * @param tgh Armor's toughness.
          * @todo Randomize new armor location.
          * @todo Ensure armor is on an unoccupied square.
          *
          */
 
-        Armor(const string name);
+        Armor(const string name, const int tgh);
 
         /** @brief Creates a new armor at location (x,y).
          *
          * @param x X-coordinate of the new armor 
          * @param y Y-coordinate of the new armor 
          * @param name Short description of the armor.
+	 * @param tgh Armor's toughness.
          * @bug Does not ensure x and y are actually on the board.
          */
 
-        Armor(const string name, const int x, const int y);
+        Armor(const string name, const int x, const int y, const int tgh);
 	
 	/** @brief Cleans up the armor when it is destroyed.
 	 *
@@ -86,7 +88,7 @@ class Armor
 
         void set_name(const string name);
 
-	/** @brief Modifies the armor's tgh.
+	/** @brief Modifies the armor's toughness.
 	 *
 	 * @param tgh The new tgh of the armor.
 	 *
@@ -94,9 +96,9 @@ class Armor
 
 	void set_tgh(const int tgh);
 
-	/** @brief Retrieves the armor's tghength.
+	/** @brief Retrieves the armor's toughness.
 	 *
-	 * @return The tghength of the armor.
+	 * @return The toughness of the armor.
 	 */
 
 	int tgh() const;
@@ -127,7 +129,7 @@ class Armor
          */
         string m_name;
 
-	/** @brief The tghength of the armor
+	/** @brief The toughness of the armor
 	 */
 	int m_tgh;
 

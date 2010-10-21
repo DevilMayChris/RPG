@@ -28,16 +28,16 @@
 
 using namespace std;
 
-Armor::Armor(const string name) : m_name(name), m_x(5), m_y(5)
+Armor::Armor(const string name, const int tgh) : m_name(name), m_x(5), m_y(5), m_tgh(tgh)
 {
-        //Initial toughness are selected randomly 1-5.
-	m_tgh = (random() % 4 ) + 1;
+	m_name = name;
+        m_tgh = tgh;
 }
 
-Armor::Armor(const string name, const int x, const int y) : m_name(name), m_x(x), m_y(y)
+Armor::Armor(const string name, const int x, const int y, const int tgh) : m_name(name), m_x(x), m_y(y), m_tgh(tgh)
 { 
-        //Initial strengths are selected randomly 1-5.
-	m_tgh = (random() % 4 ) + 1;
+	m_name = name;
+        m_tgh = tgh;
 }
 
 Armor::~Armor()
