@@ -57,7 +57,7 @@ class Weapon
          *
          */
 
-        Weapon(const string name);
+        Weapon(const string name, const int str);
 
         /** @brief Creates a new weapon at location (x,y).
          *
@@ -67,7 +67,7 @@ class Weapon
          * @bug Does not ensure x and y are actually on the board.
          */
 
-        Weapon(const string name, const int x, const int y);
+        Weapon(const string name, const int x, const int y, const int str);
 	
 	/** @brief Cleans up the weapon when it is destroyed.
 	 *

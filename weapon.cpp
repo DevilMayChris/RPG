@@ -28,16 +28,16 @@
 
 using namespace std;
 
-Weapon::Weapon(const string name) : m_name(name), m_x(5), m_y(5)
+Weapon::Weapon(const string name, const int str) : m_name(name), m_x(5), m_y(5)
 {
-        //Initial strengths are selected randomly 1-5.
-	m_str = (random() % 4 ) + 1;
+        m_name = name;
+        m_str = str;
 }
 
-Weapon::Weapon(const string name, const int x, const int y) : m_name(name), m_x(x), m_y(y)
+Weapon::Weapon(const string name, const int x, const int y, const int str) : m_name(name), m_x(x), m_y(y)
 { 
-        //Initial strengths are selected randomly 1-5.
-	m_str = (random() % 4 ) + 1;
+        m_name = name;
+        m_str  = str;
 }
 
 Weapon::~Weapon()
