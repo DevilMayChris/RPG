@@ -60,3 +60,35 @@ void Player::heal_player(const int healing)
 	if (m_health > 100)
 		m_health = 100;
 }
+
+void Player::set_weapon(Weapon* new_weapon)
+{
+	weapon = new_weapon->name();
+	str = new_weapon->str();
+}
+
+void Player::set_armor(Armor* new_armor)
+{
+	armor = new_armor->name();
+	tgh = new_armor->tgh();
+}
+
+string Player::get_weapon()
+{
+	return weapon;
+}
+
+string Player::get_armor()
+{
+	return armor;
+}
+
+int Player::get_str()
+{
+	return str;
+}
+
+int Player::get_tgh()
+{
+	return tgh;
+}

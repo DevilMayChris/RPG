@@ -25,6 +25,8 @@
  **/
 
 #include "moving_object.h"
+#include "weapon.h"
+#include "armor.h"
 #include <vector>
 
 using namespace std;
@@ -48,6 +50,24 @@ class Player : public MovingObject {
 		/** @brief The player's current health on a scale of 0 to 100.
 		 */
 		int m_health;
+		
+		/** @brief The player's current weapon.
+		 */
+		string weapon;
+		
+		/** @brief The player's current armor.
+		 */
+		string armor;
+		
+		/** @brief The player's strength.
+		 */
+		int str;
+		
+		/** @brief The player's toughness.
+		 */
+		int tgh;
+		
+		
 
 	public:
 	  	/** @brief Create a player object.
@@ -120,6 +140,48 @@ class Player : public MovingObject {
 		 */
 
 		int health() const;
+		
+		/** @brief Set player's weapon.
+		 * 
+		 *  @param weapon A pointer to the weapon.
+		 */
+		
+		void set_weapon(Weapon* weapon);
+		
+		/** @brief Set player's armor.
+		 * 
+		 *  @param armor A point to the armor.
+		 */
+		
+		void set_armor(Armor* armor);
+		
+		/** @brief Get player's armor name.
+		 * 
+		 *  @return The player's armor value.
+		 */
+		
+		string get_armor();
+		
+		/** @brief Get player's weapon name.
+		 * 
+		 *  @return The player's weapon value.
+		 */
+		
+		string get_weapon();
+		
+		/** @brief Get player's str.
+		 * 
+		 *  @return The player's str value.
+		 */
+		
+		int get_str();
+		
+		/** @brief Get player's tgh.
+		 * 
+		 *  @return The player's tgh value.
+		 */
+		
+		int get_tgh();
 };
 
-#endif
+#endif //__PLAYER_H

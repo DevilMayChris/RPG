@@ -91,4 +91,4 @@ class Monster : public MovingObject {
 		int health() const;
 };
 
-#endif
+#endif //__MONSTER_H

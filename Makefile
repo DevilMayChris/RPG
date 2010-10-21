@@ -1,9 +1,9 @@
 CFLAGS=-g
 
-simple-rpg: main.cpp object.o moving_object.o monster.o player.o
-	g++ ${CFLAGS} main.cpp player.o monster.o moving_object.o object.o -o simple-rpg
+simple-rpg: main.cpp object.o moving_object.o monster.o player.o weapon.o armor.o
+	g++ ${CFLAGS} main.cpp player.o monster.o moving_object.o object.o weapon.o armor.o -o simple-rpg
 
-player.o: object.h moving_object.h player.h player.cpp
+player.o: object.h moving_object.h player.h player.cpp 
 	g++ ${CFLAGS} -c player.cpp
 
 monster.o: object.h moving_object.h monster.h monster.cpp
@@ -14,6 +14,12 @@ moving_object.o: object.h moving_object.h moving_object.cpp
 
 object.o: object.h object.cpp
 	g++ ${CFLAGS} -c object.cpp
+
+weapon.o: weapon.h weapon.cpp
+	g++ ${CFLAGS} -c weapon.cpp
+
+armor.o: armor.h armor.cpp
+	g++ ${CFLAGS} -c armor.cpp
 
 .PHONY: clean 
 clean: 
