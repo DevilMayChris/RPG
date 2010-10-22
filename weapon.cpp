@@ -28,16 +28,18 @@
 
 using namespace std;
 
-Weapon::Weapon(const string name, const int str) : m_name(name), m_x(5), m_y(5)
+Weapon::Weapon(const string name) : Object(name)
 {
         m_name = name;
-        m_str = str;
+        m_str = (random() % 5) + 1;
 }
 
-Weapon::Weapon(const string name, const int x, const int y, const int str) : m_name(name), m_x(x), m_y(y)
+Weapon::Weapon(const string name, const int x, const int y) : Object(name, x, y)
 { 
         m_name = name;
-        m_str  = str;
+        m_str  = (random() % 5) + 1;
+	m_x = x;
+	m_y = y;
 }
 
 Weapon::~Weapon()
@@ -61,6 +63,16 @@ int Weapon::x() const
 int Weapon::y() const
 {
     return m_y;
+}
+
+void Weapon::set_x(int new_x)
+{
+    m_x = new_x;
+}
+
+void Weapon::set_y(int new_y)
+{
+    m_y = new_y;
 }
 
 string Weapon::name() const

@@ -38,6 +38,8 @@ vector<Object*> collection;
 
 string names[] = {"hammer", "iron bar", "pocket watch", "missing bit", "used paper towel", "piece of someone's sanity", "unconscious programmer"};
 string moving_names[] = {"tumbleweed", "vicious memory leak", "sarcastic script-kiddy", "dangerous hacker", "absent-minded professor"};
+string weapon_names[] = {"dagger", "short sword", "tonfa"};
+string armor_names[] = {"hardened leather", "chainmail", "studded cloth"};
 
 int main(int argc, char** argv){
     int num_objects = 10;
@@ -84,11 +86,31 @@ int main(int argc, char** argv){
         collection.push_back(new Monster(name,x,y));
     }
 		
-    //Create armor and weapons.
-    Weapon broadsword("Broadsword", random() % 11, random() % 11, 3);
-    Weapon pike("Pike", random() % 11, random() % 11, 4);
-    Armor chainmail("Chainmail", random() % 11, random() % 11, 3);
-    Armor plate("Plate", random() % 11, random() % 11, 4);
+    //Create weapons.
+    for (int i = 0; i < 3; i++) {
+        x = random() % 11;
+        y = random() % 11;
+
+        name = "weapon";
+        if (i < 3) {
+            name = weapon_names[i];
+        }
+
+        collection.push_back(new Weapon(name,x,y));
+    }
+
+    //Create armor.
+    for (int i = 0; i < 3; i++) {
+        x = random() % 11;
+        y = random() % 11;
+
+        name = "armor";
+        if (i < 3) {
+            name = armor_names[i];
+        }
+
+        collection.push_back(new Armor(name,x,y));
+    }
 
     do{ 
 		
@@ -132,25 +154,40 @@ int main(int argc, char** argv){
 					    Weapon* weap = dynamic_cast<Weapon*>(*i);
 					    Armor* arm = dynamic_cast<Armor*>(*i);
 					    if (weap){
-					        cout << "You inspect the " << weap->name(); << "." << endl;
-						if (player.str() < weap->str()) {
+					        cout << "You inspect the " << weap->name() << "." << endl;
+						if (player.get_str() < weap->str()) {
 						    player.set_weapon(weap);
-						    cout << 
-						if (player.take_item(*i)) {
-							cout << "You take a " << (*i)->name() << endl;
-							i = collection.erase(i);
+						    cout << "You pick up the " << weap->name() << " and equip it." << endl;
+						    i = collection.erase(i);
+						} else {
+						    cout << "You realize the " << weap->name() << " is worse than your " << player.get_weapon() << " so you destory it." << endl;
+						    i = collection.erase(i);
 						}
-						else {
-							i++;
-						
-						
-						}
-					}
-					else {
+                                            }
+					    if (arm){
+					        cout << "You inspect the " << arm->name() << "." << endl;
+						if (player.get_tgh() < arm->tgh()) {
+						    player.set_armor(arm);
+						    cout << "You pick up the " << arm->name() << " and equip it." << endl;
+						    i = collection.erase(i);
+						} else {
+						    cout << "The " << arm->name() << " is worse than your " << player.get_armor() << " so you destroy it." << endl;
+						    i = collection.erase(i);
+						  }
+                                                }
+					    if (player.take_item(*i)) {
+					    	cout << "You take a " << (*i)->name() << endl;
+						i = collection.erase(i);
+					    }
+					    else {
+						i++;
+					    }
+					} else {
 						i++;
 					    
 					}
-					}
+                                        break;
+				}
 			case 'a':
 				for (vector<Object*>::iterator i=collection.begin(); i != collection.end(); ) {
 					if ((*i)->x() == player.x() && (*i)->y() == player.y()) {
@@ -164,8 +201,8 @@ int main(int argc, char** argv){
 								    case 'a':
 								        cout << "You attack " << mon->name() << endl;
 								        if (random() % 2 == 0) {
-									    cout << mon->name() << " wins!  You lose 5 health." << endl;
-									        if (player.hurt_player(5) == false) {
+									    cout << mon->name() << " wins!  You lose" << (5 - player.get_tgh()) << "  health." << endl;
+									        if (player.hurt_player(5 - player.get_tgh()) == false) {
 										    cout << "You have died!" << endl;
 										    return 1;
 									        }
@@ -173,8 +210,8 @@ int main(int argc, char** argv){
 									
 								        }
 								        else {
-									    cout << "You win!  " << mon->name() << " loses 5 health." << endl;
-									    if (mon->hurt_monster(5) == false) {
+									    cout << "You win!  " << mon->name() << " loses " << (5 + player.get_str()) << " health." << endl;
+									    if (mon->hurt_monster(5 + player.get_str()) == false) {
 										cout << "You have killed the monster!" << endl;
 										i = collection.erase(i);
 										player.give_bonus(10);
@@ -183,8 +220,8 @@ int main(int argc, char** argv){
 								    case 's':
 								        cout << "You use a special attack on " << mon->name() << endl;
 								        if (random() % 10 >= 3) {
-									    cout << mon->name() << " wins!  You lose 5 health." << endl;
-									        if (player.hurt_player(5) == false) {
+									    cout << mon->name() << " wins!  You lose " << (5 - player.get_tgh()) << " health." << endl;
+									        if (player.hurt_player(5 - player.get_tgh()) == false) {
 										    cout << "You have died!" << endl;
 										    return 1;
 									        }
@@ -192,8 +229,8 @@ int main(int argc, char** argv){
 									
 								        }
 								        else {
-									    cout << "Your special attack hits!  " << mon->name() << " loses 20 health." << endl;
-									    if (mon->hurt_monster(20) == false) {
+									    cout << "Your special attack hits!  " << mon->name() << " loses " << (10 + player.get_str()) << " health." << endl;
+									    if (mon->hurt_monster(10 + player.get_str()) == false) {
 										cout << "You have killed the monster!" << endl;
 										i = collection.erase(i);
 										player.give_bonus(10);
@@ -231,7 +268,8 @@ int main(int argc, char** argv){
 					i++;
 				}
 			}
-			t=2;}
+			t=2;
+		}
 //THIS IS WHERE P2 BEGINS
 		//\//\//
 		//
@@ -309,9 +347,9 @@ int main(int argc, char** argv){
 										cout << "You have killed the monster!" << endl;
 										i = collection.erase(i);
 										player.give_bonus(10);
-																		}
-									 }
 									}
+								}
+							}
 							else 
 								i++;
 					
@@ -352,11 +390,6 @@ int main(int argc, char** argv){
 			}
 		}
 
-	
-
-		
-
-		
     } while (command != 'q' && !collection.empty());
 			
 

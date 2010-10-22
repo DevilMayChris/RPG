@@ -28,16 +28,18 @@
 
 using namespace std;
 
-Armor::Armor(const string name, const int tgh) : m_name(name), m_x(5), m_y(5), m_tgh(tgh)
+Armor::Armor(const string name) : Object(name)
 {
 	m_name = name;
-        m_tgh = tgh;
+        m_tgh = (random() % 3) + 1;
 }
 
-Armor::Armor(const string name, const int x, const int y, const int tgh) : m_name(name), m_x(x), m_y(y), m_tgh(tgh)
+Armor::Armor(const string name, const int x, const int y) : Object(name, x, y)
 { 
 	m_name = name;
-        m_tgh = tgh;
+        m_tgh = (random() % 3) + 1;
+        m_x = x;
+	m_y = y;
 }
 
 Armor::~Armor()
@@ -61,6 +63,16 @@ int Armor::x() const
 int Armor::y() const
 {
     return m_y;
+}
+
+void Armor::set_x(int new_x)
+{
+    m_x = new_x;
+}
+
+void Armor::set_y(int new_y)
+{
+    m_y = new_y;
 }
 
 string Armor::name() const

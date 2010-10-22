@@ -26,6 +26,7 @@
  **/
 
 #include <string>
+#include "object.h"
 
 using namespace std;
 
@@ -36,7 +37,7 @@ using namespace std;
  * name, which is not necessarily unique.
  */
 
-class Weapon 
+class Weapon : public Object 
 {
     public:
 
@@ -57,7 +58,7 @@ class Weapon
          *
          */
 
-        Weapon(const string name, const int str);
+        Weapon(const string name);
 
         /** @brief Creates a new weapon at location (x,y).
          *
@@ -67,7 +68,7 @@ class Weapon
          * @bug Does not ensure x and y are actually on the board.
          */
 
-        Weapon(const string name, const int x, const int y, const int str);
+        Weapon(const string name, const int x, const int y);
 	
 	/** @brief Cleans up the weapon when it is destroyed.
 	 *
@@ -114,6 +115,20 @@ class Weapon
          */
 
         int y() const;
+
+	/** @brief Changes the m_x value.
+	 *
+	 * @param new_x Takes the new m_x value.
+	 */
+
+	void set_x(int new_x);
+
+	/** @brief Changes the m_y value.
+	 *
+	 *  @param new_y Takes the new m_y value.
+	 */
+
+	void set_y(int new_y);
 
         /** @brief Retrieves the weapon's name
          *

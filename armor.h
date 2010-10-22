@@ -26,6 +26,7 @@
  **/
 
 #include <string>
+#include "object.h"
 
 using namespace std;
 
@@ -36,7 +37,7 @@ using namespace std;
  * name, which is not necessarily unique.
  */
 
-class Armor 
+class Armor:public Object 
 {
     public:
 
@@ -58,7 +59,7 @@ class Armor
          *
          */
 
-        Armor(const string name, const int tgh);
+        Armor(const string name);
 
         /** @brief Creates a new armor at location (x,y).
          *
@@ -69,7 +70,7 @@ class Armor
          * @bug Does not ensure x and y are actually on the board.
          */
 
-        Armor(const string name, const int x, const int y, const int tgh);
+        Armor(const string name, const int x, const int y);
 	
 	/** @brief Cleans up the armor when it is destroyed.
 	 *
@@ -116,6 +117,20 @@ class Armor
          */
 
         int y() const;
+
+	/** @brief Changes the m_x value.
+	 *
+	 *  @param new_x Takes the new m_x value.
+	 */
+
+	void set_x(int new_x);
+
+	/** @brief Changes the m_y value.
+	 *
+	 *  @param new_y Takes the new m_y value.
+	 */
+
+	void set_y(int new_y);
 
         /** @brief Retrieves the armor's name
          *

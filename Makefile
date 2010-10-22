@@ -15,10 +15,10 @@ moving_object.o: object.h moving_object.h moving_object.cpp
 object.o: object.h object.cpp
 	g++ ${CFLAGS} -c object.cpp
 
-weapon.o: weapon.h weapon.cpp
+weapon.o: object.h object.cpp weapon.h weapon.cpp
 	g++ ${CFLAGS} -c weapon.cpp
 
-armor.o: armor.h armor.cpp
+armor.o: object.h object.cpp armor.h armor.cpp
 	g++ ${CFLAGS} -c armor.cpp
 
 .PHONY: clean 
@@ -26,7 +26,7 @@ clean:
 	rm -f *.o simple-rpg
 
 .PHONY: 
-doc: main.cpp object.h object.cpp moving_object.h moving_object.cpp monster.h monster.cpp player.h player.cpp
+doc: main.cpp object.h object.cpp moving_object.h moving_object.cpp monster.h monster.cpp player.h player.cpp armor.h armor.cpp weapon.h weapon.cpp
 	doxygen
 
 install: simple-rpg
